@@ -1,13 +1,27 @@
 <?php
+
 namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
-class DatabaseSeeder extends Seeder {
-    public function run() {
+class DatabaseSeeder extends Seeder
+{
+    public function run()
+    {
+        $now = Carbon::now();
+        
         // 1. User Admin
-        DB::table('users')->insert(['name'=>'Admin','email'=>'admin@spk.com','password'=>Hash::make('123')]);
+        DB::table('users')->insert([
+            'name' => 'Administrator',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password123'),
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+
 
         // 2. Kriteria
         $criterias = [

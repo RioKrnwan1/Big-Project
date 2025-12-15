@@ -3,14 +3,15 @@
 @section('content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Tambah Minuman Baru</h5>
+        <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Minuman</h5>
         <a href="{{ route('drinks.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left me-2"></i>Kembali
         </a>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ route('drinks.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('drinks.update', $drink->id) }}" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             
             <div class="row">
                 <div class="col-md-6">
@@ -22,8 +23,7 @@
                                class="form-control @error('name') is-invalid @enderror" 
                                id="name" 
                                name="name" 
-                               value="{{ old('name') }}" 
-                               placeholder="Contoh: Teh Pucuk"
+                               value="{{ old('name', $drink->name) }}" 
                                required>
                         @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -41,8 +41,7 @@
                                class="form-control @error('sugar') is-invalid @enderror" 
                                id="sugar" 
                                name="sugar" 
-                               value="{{ old('sugar') }}" 
-                               placeholder="Contoh: 18"
+                               value="{{ old('sugar', $drink->sugar) }}" 
                                required>
                         @error('sugar')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -62,8 +61,7 @@
                                class="form-control @error('calories') is-invalid @enderror" 
                                id="calories" 
                                name="calories" 
-                               value="{{ old('calories') }}" 
-                               placeholder="Contoh: 130"
+                               value="{{ old('calories', $drink->calories) }}" 
                                required>
                         @error('calories')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -81,8 +79,7 @@
                                class="form-control @error('fat') is-invalid @enderror" 
                                id="fat" 
                                name="fat" 
-                               value="{{ old('fat') }}" 
-                               placeholder="Contoh: 3.5"
+                               value="{{ old('fat', $drink->fat) }}" 
                                required>
                         @error('fat')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -100,8 +97,7 @@
                                class="form-control @error('protein') is-invalid @enderror" 
                                id="protein" 
                                name="protein" 
-                               value="{{ old('protein') }}" 
-                               placeholder="Contoh: 4"
+                               value="{{ old('protein', $drink->protein) }}" 
                                required>
                         @error('protein')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -121,8 +117,7 @@
                                class="form-control @error('carbs') is-invalid @enderror" 
                                id="carbs" 
                                name="carbs" 
-                               value="{{ old('carbs') }}" 
-                               placeholder="Contoh: 22"
+                               value="{{ old('carbs', $drink->carbs) }}" 
                                required>
                         @error('carbs')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -133,14 +128,14 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="image" class="form-label fw-semibold">
-                            <i class="fas fa-image text-primary me-2"></i>Gambar (Opsional)
+                            <i class="fas fa-image text-primary me-2"></i>Gambar Baru (Opsional)
                         </label>
                         <input type="file" 
                                class="form-control @error('image') is-invalid @enderror" 
                                id="image" 
                                name="image" 
                                accept="image/*">
-                        <small class="text-muted">Format: JPG, PNG, GIF. Max: 2MB</small>
+                        <small class="text-muted">Kosongkan jika tidak ingin mengubah gambar. Format: JPG, PNG, GIF. Max: 2MB</small>
                         @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -152,7 +147,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save me-2"></i>Simpan Data
+                    <i class="fas fa-save me-2"></i>Simpan Perubahan
                 </button>
                 <a href="{{ route('drinks.index') }}" class="btn btn-secondary">
                     <i class="fas fa-times me-2"></i>Batal

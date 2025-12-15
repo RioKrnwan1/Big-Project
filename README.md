@@ -1,66 +1,211 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SPK Minuman Sehat - Sistem Pendukung Keputusan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-10.x-red) ![PHP](https://img.shields.io/badge/PHP-8.1+-blue) ![License](https://img.shields.io/badge/License-MIT-green)
 
-## About Laravel
+## 📖 Tentang Proyek
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**SPK Minuman Sehat** adalah Sistem Pendukung Keputusan (Decision Support System) berbasis web untuk memberikan rekomendasi minuman sehat menggunakan metode **SAW (Simple Additive Weighting)**. Sistem ini mengevaluasi berbagai alternatif minuman berdasarkan kriteria nutrisi seperti kadar gula, kalori, lemak, protein, dan karbohidrat.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### ✨ Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- 🔐 **Autentikasi** - Login dan logout dengan session management
+- 📊 **Analisis Multi-Kriteria** - Evaluasi minuman berdasarkan 5 kriteria nutrisi
+- 🏆 **Ranking Otomatis** - Perhitungan SAW menghasilkan peringkat minuman terbaik
+- ✏️ **CRUD Lengkap** - Kelola data minuman, kriteria, sub-kriteria, dan admin
+- 🎨 **UI Modern** - Interface yang intuitif dan responsif
+- ✅ **Validasi Input** - Form validation dengan pesan error dalam Bahasa Indonesia
+- 🛡️ **Keamanan** - Protected routes, mass assignment protection, CSRF protection
 
-## Learning Laravel
+## 🚀 Instalasi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Prasyarat
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- PHP >= 8.1
+- Composer
+- MySQL/MariaDB
+- Node.js & NPM (opsional, untuk development)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Langkah Instalasi
 
-## Laravel Sponsors
+1. **Clone Repository**
+```bash
+git clone <repository-url>
+cd Big-Project
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. **Install Dependencies**
+```bash
+composer install
+```
 
-### Premium Partners
+3. **Konfigurasi Environment**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+4. **Konfigurasi Database**
+Edit file `.env` dan sesuaikan dengan database Anda:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=spk_minuman
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Contributing
+5. **Migrasi dan Seeder**
+```bash
+php artisan migrate:fresh --seed
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. **Jalankan Aplikasi**
+```bash
+php artisan serve
+```
 
-## Code of Conduct
+Aplikasi akan berjalan di `http://localhost:8000`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 👤 Akun Default
 
-## Security Vulnerabilities
+Setelah menjalankan seeder, gunakan kredensial berikut untuk login:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **Email**: `admin@example.com`
+- **Password**: `password123`
 
-## License
+## 📚 Penggunaan
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 1. Login
+Akses halaman `/login` dan masukkan kredensial admin.
+
+### 2. Kelola Data Master
+
+#### Minuman
+- Tambah data minuman dengan informasi nutrisi (gula, kalori, lemak, protein, karbohidrat)
+- Edit atau hapus data minuman yang ada
+
+#### Kriteria
+- Kelola kriteria evaluasi (C1-C5)
+- Setiap kriteria memiliki bobot dan atribut (cost/benefit)
+- Total bobot harus = 1.0
+
+#### Sub-Kriteria
+- Definisikan range nilai untuk setiap kriteria
+- Range digunakan untuk konversi nilai asli ke skala 1-5
+
+#### Admin
+- Kelola user yang dapat mengakses sistem
+
+### 3. Lihat Ranking
+Akses halaman `/spk` untuk melihat:
+- **Data Awal** - Konversi nilai nutrisi ke skala 1-5
+- **Normalisasi** - Matrix R hasil normalisasi SAW
+- **Ranking Final** - Urutan minuman dari yang terbaik
+
+## 🔬 Metode SAW (Simple Additive Weighting)
+
+### Algoritma
+
+1. **Konversi ke Skala (Matrix X)**
+   - Nilai nutrisi asli dikonversi ke skala 1-5 berdasarkan range sub-kriteria
+
+2. **Normalisasi (Matrix R)**
+   - **Benefit**: R = X / Max(X)
+   - **Cost**: R = Min(X) / X
+
+3. **Perhitungan Skor (V)**
+   - V = Σ(R × W)
+   - W = Bobot kriteria
+
+4. **Ranking**
+   - Alternatif diurutkan berdasarkan skor tertinggi
+
+## 🏗️ Struktur Proyek
+
+```
+Big-Project/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── AuthController.php       # Login/Logout
+│   │   │   ├── DrinkController.php      # CRUD Minuman
+│   │   │   ├── CriteriaController.php   # CRUD Kriteria
+│   │   │   ├── SubCriteriaController.php # CRUD Sub-Kriteria
+│   │   │   ├── UserController.php       # CRUD User
+│   │   │   └── SpkController.php        # Perhitungan SAW
+│   │   ├── Requests/                    # Form Validations
+│   │   │   ├── DrinkRequest.php
+│   │   │   ├── CriteriaRequest.php
+│   │   │   ├── SubCriteriaRequest.php
+│   │   │   ├── UserRequest.php
+│   │   │   └── LoginRequest.php
+│   │   └── Middleware/
+│   ├── Models/
+│   │   ├── Drink.php
+│   │   ├── Criteria.php
+│   │   ├── SubCriteria.php
+│   │   └── User.php
+│   └── Services/
+│       └── SpkService.php               # Business Logic SAW
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── resources/
+│   └── views/
+│       ├── auth/
+│       │   └── login.blade.php
+│       ├── layouts/
+│       │   └── main.blade.php
+│       ├── drinks/
+│       ├── criterias/
+│       ├── subcriterias/
+│       └── spk/
+└── routes/
+    └── web.php
+```
+
+## 🔒 Keamanan
+
+- ✅ Form Request Validation pada semua input
+- ✅ Mass Assignment Protection dengan explicit `$fillable`
+- ✅ Password Hashing otomatis
+- ✅ CSRF Token pada semua form
+- ✅ Authentication Middleware
+- ✅ Database Query dengan Eloquent ORM
+- ✅ Error Handling dan Logging
+
+## 🛠️ Teknologi
+
+- **Backend**: Laravel 10.x
+- **Database**: MySQL
+- **Frontend**: Blade Templates, Bootstrap 5
+- **Authentication**: Laravel built-in Auth
+- **Icons**: Font Awesome 6
+
+## 📝 Kriteria Evaluasi
+
+| Kode | Nama | Atribut | Bobot | Deskripsi |
+|------|------|---------|-------|-----------|
+| C1 | Gula | Cost | 0.35 | Kadar gula (g) - semakin rendah semakin baik |
+| C2 | Energi | Cost | 0.20 | Kalori (kcal) - semakin rendah semakin baik |
+| C3 | Lemak | Cost | 0.15 | Kadar lemak (g) - semakin rendah semakin baik |
+| C4 | Protein | Benefit | 0.20 | Kadar protein (g) - semakin tinggi semakin baik |
+| C5 | Karbohidrat | Cost | 0.10 | Kadar karbohidrat (g) - semakin rendah semakin baik |
+
+## 🤝 Kontribusi
+
+Kontribusi sangat diterima! Silakan buat pull request untuk perbaikan atau fitur baru.
+
+## 📄 Lisensi
+
+Proyek ini dilisensikan di bawah [MIT License](https://opensource.org/licenses/MIT).
+
+## 📧 Kontak
+
+Untuk pertanyaan atau saran, silakan hubungi:
+- Email: admin@example.com
+
+---
+
+**Catatan Pengembangan**: Proyek ini telah melalui audit keamanan dan code quality improvement. Semua controller menggunakan Form Request validation, service layer untuk business logic, dan comprehensive error handling.
