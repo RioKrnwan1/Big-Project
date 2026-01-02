@@ -2,14 +2,9 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h3 class="fw-bold text-dark mb-1">Hasil Analisa SAW</h3>
-        <p class="text-muted small mb-0">Laporan lengkap perhitungan metode Simple Additive Weighting</p>
-    </div>
-    <button onclick="window.print()" class="btn btn-outline-primary rounded-pill px-4">
-        <i class="fas fa-print me-2"></i>Cetak
-    </button>
+<div class="mb-4">
+    <h3 class="fw-bold text-dark mb-1">Hasil Analisa SAW</h3>
+    <p class="text-muted small mb-0">Laporan lengkap perhitungan metode Simple Additive Weighting</p>
 </div>
 
 <ul class="nav nav-pills mb-4 gap-2" id="pills-tab" role="tablist">
@@ -29,7 +24,7 @@
     
     <div class="tab-pane fade show active" id="pills-rank" role="tabpanel">
         <div class="row mb-4">
-            @foreach($hasil_akhir as $idx => $row)
+            @foreach($hasilAkhir as $idx => $row)
                 @if($idx < 3)
                 <div class="col-md-4">
                     <div class="card border-0 shadow-sm text-center p-4 h-100" 
@@ -57,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($hasil_akhir as $idx => $row)
+                        @foreach($hasilAkhir as $idx => $row)
                         <tr>
                             <td class="ps-4 fw-bold">#{{ $idx + 1 }}</td>
                             <td>{{ $row['name'] }}</td>
@@ -93,7 +88,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($data_awal as $row)
+                        @foreach($dataAwal as $row)
                         <tr>
                             <td class="text-start ps-3 fw-bold">{{ $row['name'] }}</td>
                             @foreach($criterias as $c)
@@ -153,7 +148,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($hasil_akhir as $row)
+                        @foreach($hasilAkhir as $row)
                         <tr>
                             <td class="text-start ps-3 fw-bold">{{ $row['name'] }}</td>
                             <td class="fw-bold text-success">{{ number_format($row['score'], 4) }}</td>

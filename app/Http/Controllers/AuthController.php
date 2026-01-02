@@ -55,11 +55,9 @@ class AuthController extends Controller
         try {
             $user = User::create($request->validated());
 
-            // Auto login after registration
-            Auth::login($user);
-
-            return redirect()->route('drinks.index')
-                ->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name . '. Anda dapat mulai mengelola data SPK.');
+            // Redirect ke login setelah registrasi berhasil
+            return redirect()->route('login')
+                ->with('success', 'Pendaftaran berhasil! Akun Anda telah terdaftar. Silakan login untuk melanjutkan.');
         } catch (\Exception $e) {
             \Log::error('Registration Error: ' . $e->getMessage());
             

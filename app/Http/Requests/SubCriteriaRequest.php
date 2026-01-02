@@ -26,9 +26,9 @@ class SubCriteriaRequest extends FormRequest
     {
         return [
             'criteria_id' => 'required|exists:criterias,id',
-            'range_min' => 'required|numeric|min:0',
-            'range_max' => 'required|numeric|min:0|gt:range_min',
-            'value' => 'required|integer|min:1|max:5',
+            'range_min' => 'required|numeric|min:0|max:1000',              // Max 1000 (cover semua kemungkinan)
+            'range_max' => 'required|numeric|min:0|max:1000|gt:range_min', // Max 1000 & harus > min
+            'value' => 'required|integer|min:1|max:5',                     // Skor 1-5
         ];
     }
 

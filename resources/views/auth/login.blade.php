@@ -17,6 +17,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 40px 20px;
         }
 
         .login-card {
@@ -26,6 +27,7 @@
             overflow: hidden;
             max-width: 900px;
             width: 100%;
+            margin: auto;
         }
 
         .login-left {

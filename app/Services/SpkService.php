@@ -8,12 +8,12 @@ use App\Models\SubCriteria;
 use Illuminate\Support\Collection;
 
 /**
- * SPK Service - Handles SAW (Simple Additive Weighting) Algorithm
+ * SPK Service - Simple Additive Weighting (SAW) Implementation
  * 
- * This service implements the SAW method for decision support system:
- * 1. Convert raw values to scale (1-5)
- * 2. Normalize values (0-1)
- * 3. Calculate weighted scores
+ * Implements SAW algorithm for multi-criteria decision making:
+ * 1. Convert raw values to scaled scores (1-5)
+ * 2. Normalize scores (0-1)
+ * 3. Calculate weighted sum
  */
 class SpkService
 {
@@ -24,17 +24,17 @@ class SpkService
      */
     public function calculate(): array
     {
-        $drinks = Drink::all();
-        $criterias = Criteria::all();
+        $minuman = Drink::all();
+        $kriteria = Criteria::all();
 
         // Step 1: Convert to scale (Matrix X)
-        $dataAwal = $this->convertToScale($drinks, $criterias);
+        $dataAwal = $this->konversiKeSkala($minuman, $kriteria);
 
         // Step 2: Find min/max for normalization
-        $minMax = $this->findMinMax($dataAwal, $criterias);
+        $minMax = $this->cariMinMax($dataAwal, $kriteria);
 
         // Step 3: Calculate normalization (Matrix R) and final scores (V)
-        [$normalisasi, $hasilAkhir] = $this->calculateScores($dataAwal, $criterias, $minMax);
+        [$normalisasi, $hasilAkhir] = $this->hitungSkor($dataAwal, $kriteria, $minMax);
 
         // Sort by score descending
         usort($hasilAkhir, fn($a, $b) => $b['score'] <=> $a['score']);
@@ -47,119 +47,100 @@ class SpkService
     }
 
     /**
-     * Convert raw drink values to 1-5 scale based on sub-criteria ranges
-     *
-     * @param Collection $drinks
-     * @param Collection $criterias
-     * @return array
+     * Convert raw values to scale 1-5 based on subcriteria ranges
      */
-    protected function convertToScale(Collection $drinks, Collection $criterias): array
+    protected function konversiKeSkala(Collection $minuman, Collection $kriteria): array
     {
-        $dataAwal = [];
+        $hasil = [];
 
-        foreach ($drinks as $drink) {
-            $rowSkala = [];
+        foreach ($minuman as $item) {
+            $skorPerKriteria = [];
 
-            foreach ($criterias as $criteria) {
-                $columnRef = $criteria->column_ref;
-                $rawValue = $drink->$columnRef;
+            foreach ($kriteria as $k) {
+                $nilaiAsli = $item->{$k->column_ref};
 
-                // Find matching sub-criteria range
-                $subCriteria = SubCriteria::where('criteria_id', $criteria->id)
-                    ->where('range_min', '<=', $rawValue)
-                    ->where('range_max', '>=', $rawValue)
+                // Find matching subcriteria range
+                $subKriteria = SubCriteria::where('criteria_id', $k->id)
+                    ->where('range_min', '<=', $nilaiAsli)
+                    ->where('range_max', '>=', $nilaiAsli)
                     ->first();
 
-                // Default to 1 if no range found
-                $nilaiSkala = $subCriteria ? $subCriteria->value : 1;
-                $rowSkala[$criteria->id] = $nilaiSkala;
+                // Default score is 1 if no range matches
+                $skorPerKriteria[$k->id] = $subKriteria ? $subKriteria->value : 1;
             }
 
-            $dataAwal[] = [
-                'name' => $drink->name,
-                'values' => $rowSkala,
+            $hasil[] = [
+                'name' => $item->name,
+                'values' => $skorPerKriteria,
             ];
         }
 
-        return $dataAwal;
+        return $hasil;
     }
 
     /**
-     * Find min/max values for each criteria for normalization
-     *
-     * @param array $dataAwal
-     * @param Collection $criterias
-     * @return array
+     * Find min/max values for each criteria
      */
-    protected function findMinMax(array $dataAwal, Collection $criterias): array
+    protected function cariMinMax(array $dataAwal, Collection $kriteria): array
     {
-        $minMax = [];
+        $hasil = [];
 
-        foreach ($criterias as $criteria) {
-            $columnValues = array_column(array_column($dataAwal, 'values'), $criteria->id);
+        foreach ($kriteria as $k) {
+            $semuaNilai = array_column(array_column($dataAwal, 'values'), $k->id);
 
-            if (empty($columnValues)) {
-                $minMax[$criteria->id] = 0;
+            if (empty($semuaNilai)) {
+                $hasil[$k->id] = 0;
                 continue;
             }
 
-            // For benefit: use max; for cost: use min
-            if ($criteria->attribute === Criteria::ATTRIBUTE_BENEFIT) {
-                $minMax[$criteria->id] = max($columnValues);
-            } else {
-                $minMax[$criteria->id] = min($columnValues);
-            }
+            // Benefit uses max, Cost uses min
+            $hasil[$k->id] = ($k->attribute === 'benefit') 
+                ? max($semuaNilai) 
+                : min($semuaNilai);
         }
 
-        return $minMax;
+        return $hasil;
     }
 
     /**
-     * Calculate normalization matrix (R) and final scores (V)
-     *
-     * @param array $dataAwal
-     * @param Collection $criterias
-     * @param array $minMax
-     * @return array [normalisasi, hasilAkhir]
+     * Calculate normalization and final scores
+     * 
+     * SAW normalization formulas:
+     * - Benefit: r = x / max
+     * - Cost: r = min / x
      */
-    protected function calculateScores(array $dataAwal, Collection $criterias, array $minMax): array
+    protected function hitungSkor(array $dataAwal, Collection $kriteria, array $minMax): array
     {
         $normalisasi = [];
         $hasilAkhir = [];
 
         foreach ($dataAwal as $item) {
-            $totalScore = 0;
-            $rowNorm = [];
+            $totalSkor = 0;
+            $nilaiNormalisasi = [];
 
-            foreach ($criterias as $criteria) {
-                $nilaiSkala = $item['values'][$criteria->id];
-                $pembagi = $minMax[$criteria->id];
+            foreach ($kriteria as $k) {
+                $skor = $item['values'][$k->id];
+                $pembagi = $minMax[$k->id];
 
-                // SAW normalization formula
-                if ($criteria->attribute === Criteria::ATTRIBUTE_BENEFIT) {
-                    // For benefit: r = x / max
-                    $r = ($pembagi == 0) ? 0 : ($nilaiSkala / $pembagi);
+                // Calculate normalized value
+                if ($k->attribute === 'benefit') {
+                    $r = ($pembagi == 0) ? 0 : ($skor / $pembagi);
                 } else {
-                    // For cost: r = min / x
-                    $r = ($nilaiSkala == 0) ? 0 : ($pembagi / $nilaiSkala);
+                    $r = ($skor == 0) ? 0 : ($pembagi / $skor);
                 }
 
-                $rowNorm[$criteria->id] = $r;
-                
-                // Calculate weighted score
-                $totalScore += $r * $criteria->weight;
+                $nilaiNormalisasi[$k->id] = $r;
+                $totalSkor += $r * $k->weight;
             }
 
-            // Store normalization matrix
             $normalisasi[] = [
                 'name' => $item['name'],
-                'values' => $rowNorm,
+                'values' => $nilaiNormalisasi,
             ];
 
-            // Store final scores
             $hasilAkhir[] = [
                 'name' => $item['name'],
-                'score' => $totalScore,
+                'score' => $totalSkor,
             ];
         }
 

@@ -127,7 +127,7 @@
                 <form method="POST" action="{{ url('/register') }}">
                     @csrf
                     
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="name" class="form-label fw-semibold">Nama Lengkap</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white">
@@ -142,7 +142,7 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="email" class="form-label fw-semibold">Email</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white">
@@ -157,7 +157,7 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="password" class="form-label fw-semibold">Password</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white">

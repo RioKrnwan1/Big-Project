@@ -404,6 +404,9 @@
         </div>
 
         <div class="nav-label">Dashboard</div>
+        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('/') || request()->is('dashboard*') ? 'active' : '' }}">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
         <a href="{{ route('spk.index') }}" class="nav-link {{ request()->is('spk*') ? 'active' : '' }}">
             <i class="fas fa-chart-pie"></i> Ranking
         </a>
@@ -443,7 +446,7 @@
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=6366f1&color=fff" class="rounded-circle me-2" width="38" height="38">
                     <div>
                         <div class="fw-bold small text-dark">{{ Auth::user()->name }}</div>
-                        <div class="text-muted" style="font-size: 0.75rem;">{{ Auth::user()->email }}</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">Sistem SPK</div>
                     </div>
                 </div>
             </div>

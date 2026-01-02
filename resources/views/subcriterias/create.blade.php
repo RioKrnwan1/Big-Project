@@ -14,7 +14,7 @@
             
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="criteria_id" class="form-label fw-semibold">
                             <i class="fas fa-sliders-h text-primary me-2"></i>Kriteria
                         </label>
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="value" class="form-label fw-semibold">
                             <i class="fas fa-star text-primary me-2"></i>Nilai (Skala 1-5)
                         </label>
@@ -58,7 +58,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="range_min" class="form-label fw-semibold">
                             <i class="fas fa-arrow-down text-primary me-2"></i>Range Minimum
                         </label>
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="range_max" class="form-label fw-semibold">
                             <i class="fas fa-arrow-up text-primary me-2"></i>Range Maximum
                         </label>

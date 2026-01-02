@@ -26,11 +26,10 @@ class DrinkRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'sugar' => 'required|numeric|min:0|max:1000',
-            'calories' => 'required|numeric|min:0|max:5000',
-            'fat' => 'required|numeric|min:0|max:500',
-            'protein' => 'required|numeric|min:0|max:500',
-            'carbs' => 'required|numeric|min:0|max:1000',
+            'calories' => 'required|numeric|min:0|max:500',     // Max 500 kcal untuk minuman 250ml
+            'protein' => 'required|numeric|min:0|max:20',       // Max 20g (susu protein tinggi)
+            'carbs' => 'required|numeric|min:0|max:60',         // Max 60g (smoothie/juice manis)
+            'fat' => 'required|numeric|min:0|max:20',           // Max 20g (cream/susu full fat)
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
         ];
     }
@@ -42,14 +41,11 @@ class DrinkRequest extends FormRequest
     {
         return [
             'name.required' => 'Nama minuman wajib diisi',
-            'sugar.required' => 'Kadar gula wajib diisi',
-            'sugar.numeric' => 'Kadar gula harus berupa angka',
-            'sugar.min' => 'Kadar gula tidak boleh negatif',
             'calories.required' => 'Kalori wajib diisi',
             'calories.numeric' => 'Kalori harus berupa angka',
-            'fat.required' => 'Kadar lemak wajib diisi',
             'protein.required' => 'Kadar protein wajib diisi',
             'carbs.required' => 'Kadar karbohidrat wajib diisi',
+            'fat.required' => 'Kadar lemak wajib diisi',
             'image.image' => 'File harus berupa gambar',
             'image.mimes' => 'Format gambar harus jpeg, jpg, png, atau gif',
             'image.max' => 'Ukuran gambar maksimal 2MB',

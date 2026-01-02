@@ -10,11 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property string $name
- * @property float $sugar
  * @property float $calories
- * @property float $fat
  * @property float $protein
  * @property float $carbs
+ * @property float $fat
  * @property string|null $image
  */
 class Drink extends Model
@@ -28,11 +27,10 @@ class Drink extends Model
      */
     protected $fillable = [
         'name',
-        'sugar',
         'calories',
-        'fat',
         'protein',
         'carbs',
+        'fat',
         'image',
     ];
 
@@ -42,10 +40,9 @@ class Drink extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'sugar' => 'float',
         'calories' => 'float',
-        'fat' => 'float',
         'protein' => 'float',
         'carbs' => 'float',
+        'fat' => 'float',
     ];
 }

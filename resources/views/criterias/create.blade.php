@@ -14,7 +14,7 @@
             
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="code" class="form-label fw-semibold">
                             <i class="fas fa-code text-primary me-2"></i>Kode Kriteria
                         </label>
@@ -23,7 +23,7 @@
                                id="code" 
                                name="code" 
                                value="{{ old('code') }}" 
-                               placeholder="Contoh: C1, C2, C3"
+                               placeholder="Contoh: C1, C2, C3, C4"
                                required>
                         @error('code')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="name" class="form-label fw-semibold">
                             <i class="fas fa-tag text-primary me-2"></i>Nama Kriteria
                         </label>
@@ -41,7 +41,7 @@
                                id="name" 
                                name="name" 
                                value="{{ old('name') }}" 
-                               placeholder="Contoh: Gula, Kalori, Lemak"
+                               placeholder="Contoh: Kalori, Protein, Lemak"
                                required>
                         @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -51,8 +51,8 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
-                    <div class="mb-3">
+                <div class="col-md-6">
+                    <div class="mb-4">
                         <label for="attribute" class="form-label fw-semibold">
                             <i class="fas fa-exchange-alt text-primary me-2"></i>Atribut
                         </label>
@@ -70,8 +70,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="mb-3">
+                <div class="col-md-6">
+                    <div class="mb-4">
                         <label for="weight" class="form-label fw-semibold">
                             <i class="fas fa-weight text-primary me-2"></i>Bobot (0-1)
                         </label>
@@ -81,7 +81,7 @@
                                id="weight" 
                                name="weight" 
                                value="{{ old('weight') }}" 
-                               placeholder="Contoh: 0.35"
+                               placeholder="Contoh: 0.35, 0.30, 0.20, 0.15"
                                min="0"
                                max="1"
                                required>
@@ -91,26 +91,28 @@
                         <small class="text-muted">Total bobot semua kriteria harus = 1.0</small>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-md-4">
-                    <div class="mb-3">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-4">
                         <label for="column_ref" class="form-label fw-semibold">
-                            <i class="fas fa-database text-primary me-2"></i>Referensi Kolom
+                            <i class="fas fa-database text-primary me-2"></i>Referensi Kolom Database
                         </label>
                         <select class="form-control @error('column_ref') is-invalid @enderror" 
                                 id="column_ref" 
                                 name="column_ref" 
                                 required>
                             <option value="">Pilih Kolom</option>
-                            <option value="sugar" {{ old('column_ref') == 'sugar' ? 'selected' : '' }}>sugar (Gula)</option>
-                            <option value="calories" {{ old('column_ref') == 'calories' ? 'selected' : '' }}>calories (Kalori)</option>
-                            <option value="fat" {{ old('column_ref') == 'fat' ? 'selected' : '' }}>fat (Lemak)</option>
+                            <option value="calories" {{ old('column_ref') == 'calories' ? 'selected' : '' }}>calories (Kalori / Energi)</option>
                             <option value="protein" {{ old('column_ref') == 'protein' ? 'selected' : '' }}>protein (Protein)</option>
                             <option value="carbs" {{ old('column_ref') == 'carbs' ? 'selected' : '' }}>carbs (Karbohidrat)</option>
+                            <option value="fat" {{ old('column_ref') == 'fat' ? 'selected' : '' }}>fat (Lemak)</option>
                         </select>
                         @error('column_ref')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                        <small class="text-muted d-block mt-1">Kolom database yang akan digunakan untuk perhitungan SPK</small>
                     </div>
                 </div>
             </div>

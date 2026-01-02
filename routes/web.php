@@ -7,6 +7,7 @@ use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\SubCriteriaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -17,7 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Protected Routes (require authentication)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () { return redirect('/spk'); });
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     
     // Profile routes
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');

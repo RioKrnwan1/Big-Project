@@ -14,8 +14,8 @@
             @method('PUT')
             
             <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
+                <div class="col-12">
+                    <div class="mb-4">
                         <label for="name" class="form-label fw-semibold">
                             <i class="fas fa-wine-bottle text-primary me-2"></i>Nama Minuman
                         </label>
@@ -30,34 +30,16 @@
                         @enderror
                     </div>
                 </div>
-
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="sugar" class="form-label fw-semibold">
-                            <i class="fas fa-cube text-primary me-2"></i>Kadar Gula (gram)
-                        </label>
-                        <input type="number" 
-                               step="0.1"
-                               class="form-control @error('sugar') is-invalid @enderror" 
-                               id="sugar" 
-                               name="sugar" 
-                               value="{{ old('sugar', $drink->sugar) }}" 
-                               required>
-                        @error('sugar')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
             </div>
 
             <div class="row">
-                <div class="col-md-4">
-                    <div class="mb-3">
+                <div class="col-md-6">
+                    <div class="mb-4">
                         <label for="calories" class="form-label fw-semibold">
-                            <i class="fas fa-fire text-primary me-2"></i>Kalori (kcal)
+                            <i class="fas fa-bolt text-primary me-2"></i>Energi / Kalori (kcal)
                         </label>
                         <input type="number" 
-                               step="0.1"
+                               step="0.01"
                                class="form-control @error('calories') is-invalid @enderror" 
                                id="calories" 
                                name="calories" 
@@ -69,31 +51,13 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="fat" class="form-label fw-semibold">
-                            <i class="fas fa-droplet text-primary me-2"></i>Lemak (gram)
-                        </label>
-                        <input type="number" 
-                               step="0.1"
-                               class="form-control @error('fat') is-invalid @enderror" 
-                               id="fat" 
-                               name="fat" 
-                               value="{{ old('fat', $drink->fat) }}" 
-                               required>
-                        @error('fat')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="mb-3">
+                <div class="col-md-6">
+                    <div class="mb-4">
                         <label for="protein" class="form-label fw-semibold">
                             <i class="fas fa-dumbbell text-primary me-2"></i>Protein (gram)
                         </label>
                         <input type="number" 
-                               step="0.1"
+                               step="0.01"
                                class="form-control @error('protein') is-invalid @enderror" 
                                id="protein" 
                                name="protein" 
@@ -108,12 +72,12 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="carbs" class="form-label fw-semibold">
                             <i class="fas fa-bread-slice text-primary me-2"></i>Karbohidrat (gram)
                         </label>
                         <input type="number" 
-                               step="0.1"
+                               step="0.01"
                                class="form-control @error('carbs') is-invalid @enderror" 
                                id="carbs" 
                                name="carbs" 
@@ -126,7 +90,27 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-4">
+                        <label for="fat" class="form-label fw-semibold">
+                            <i class="fas fa-droplet text-primary me-2"></i>Lemak (gram)
+                        </label>
+                        <input type="number" 
+                               step="0.01"
+                               class="form-control @error('fat') is-invalid @enderror" 
+                               id="fat" 
+                               name="fat" 
+                               value="{{ old('fat', $drink->fat) }}" 
+                               required>
+                        @error('fat')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-4">
                         <label for="image" class="form-label fw-semibold">
                             <i class="fas fa-image text-primary me-2"></i>Gambar Baru (Opsional)
                         </label>

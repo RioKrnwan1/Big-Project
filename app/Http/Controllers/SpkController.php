@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Criteria;
+use App\Models\Drink;
 use App\Services\SpkService;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,7 @@ class SpkController extends Controller
             $dataAwal = $result['data_awal'];
             $criterias = Criteria::all();
 
-            return view('spk.index', compact('hasil_akhir', 'normalisasi', 'data_awal', 'criterias'));
+            return view('spk.index', compact('hasilAkhir', 'normalisasi', 'dataAwal', 'criterias'));
         } catch (\Exception $e) {
             \Log::error('SPK Calculation Error: ' . $e->getMessage());
             

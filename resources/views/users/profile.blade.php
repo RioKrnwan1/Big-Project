@@ -24,7 +24,7 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="name" class="form-label fw-semibold">
                             <i class="fas fa-user text-primary me-2"></i>Nama Lengkap
                         </label>
@@ -39,7 +39,7 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="email" class="form-label fw-semibold">
                             <i class="fas fa-envelope text-primary me-2"></i>Email
                         </label>
@@ -59,29 +59,35 @@
                         <small>Kosongkan field password jika tidak ingin mengubah password</small>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="password" class="form-label fw-semibold">
-                            <i class="fas fa-lock text-primary me-2"></i>Password Baru
-                        </label>
-                        <input type="password" 
-                               class="form-control @error('password') is-invalid @enderror" 
-                               id="password" 
-                               name="password" 
-                               placeholder="Minimal 8 karakter">
-                        @error('password')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="password" class="form-label fw-semibold">
+                                    <i class="fas fa-lock text-primary me-2"></i>Password Baru
+                                </label>
+                                <input type="password" 
+                                       class="form-control @error('password') is-invalid @enderror" 
+                                       id="password" 
+                                       name="password" 
+                                       placeholder="Minimal 8 karakter">
+                                @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
-                    <div class="mb-4">
-                        <label for="password_confirmation" class="form-label fw-semibold">
-                            <i class="fas fa-lock text-primary me-2"></i>Konfirmasi Password
-                        </label>
-                        <input type="password" 
-                               class="form-control" 
-                               id="password_confirmation" 
-                               name="password_confirmation" 
-                               placeholder="Ulangi password baru">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="password_confirmation" class="form-label fw-semibold">
+                                    <i class="fas fa-lock text-primary me-2"></i>Konfirmasi Password
+                                </label>
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="password_confirmation" 
+                                       name="password_confirmation" 
+                                       placeholder="Ulangi password baru">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex gap-2">
