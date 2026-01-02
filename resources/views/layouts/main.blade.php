@@ -403,15 +403,16 @@
             <span>HealthyLife</span>
         </div>
 
+
         <div class="nav-label">Dashboard</div>
-        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('/') || request()->is('dashboard*') ? 'active' : '' }}">
-            <i class="fas fa-home"></i> Dashboard
-        </a>
         <a href="{{ route('spk.index') }}" class="nav-link {{ request()->is('spk*') ? 'active' : '' }}">
             <i class="fas fa-chart-pie"></i> Ranking
         </a>
 
         <div class="nav-label">Master Data</div>
+        <a href="{{ route('comparisons.index') }}" class="nav-link {{ request()->is('comparisons*') ? 'active' : '' }}">
+            <i class="fas fa-balance-scale"></i> Perbandingan
+        </a>
         <a href="{{ route('drinks.index') }}" class="nav-link {{ request()->is('drinks*') ? 'active' : '' }}">
             <i class="fas fa-wine-bottle"></i> Minuman
         </a>

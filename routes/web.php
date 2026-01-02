@@ -7,7 +7,7 @@ use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\SubCriteriaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ComparisonController;
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -18,7 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Protected Routes (require authentication)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', function () { return redirect('/spk'); });
     
     // Profile routes
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('criterias', CriteriaController::class);
     Route::resource('subcriterias', SubCriteriaController::class);
     Route::resource('users', UserController::class);
+    Route::resource('comparisons', ComparisonController::class);
     
     Route::get('/spk', [SpkController::class, 'index'])->name('spk.index');
 });
