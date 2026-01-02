@@ -48,6 +48,40 @@ class SubCriteriaController extends Controller
     }
 
     /**
+     * Show the form for editing the specified sub-criteria
+     */
+    public function edit($id)
+    {
+        try {
+            $subCriteria = SubCriteria::findOrFail($id);
+            $criterias = Criteria::all();
+            return view('subcriterias.edit', compact('subCriteria', 'criterias'));
+        } catch (\Exception $e) {
+            return redirect()->route('subcriterias.index')
+                ->with('error', 'Sub-kriteria tidak ditemukan');
+        }
+    }
+
+    /**
+     * Update the specified sub-criteria
+     */
+    public function update(SubCriteriaRequest $request, $id)
+    {
+        try {
+            $subCriteria = SubCriteria::findOrFail($id);
+            $subCriteria->update($request->validated());
+
+            return redirect()->route('subcriterias.index')
+                ->with('success', 'Sub-kriteria berhasil diperbarui');
+        } catch (\Exception $e) {
+            \Log::error('Error updating sub-criteria: ' . $e->getMessage());
+            
+            return back()->withInput()
+                ->with('error', 'Terjadi kesalahan saat memperbarui sub-kriteria');
+        }
+    }
+
+    /**
      * Remove the specified sub-criteria
      */
     public function destroy($id)

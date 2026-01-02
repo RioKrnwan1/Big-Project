@@ -9,7 +9,7 @@
         </a>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ route('subcriterias.update', $subcriteria->id) }}">
+        <form method="POST" action="{{ route('subcriterias.update', $subCriteria->id) }}">
             @csrf
             @method('PUT')
             
@@ -25,7 +25,7 @@
                                 required>
                             <option value="">Pilih Kriteria</option>
                             @foreach(\App\Models\Criteria::all() as $criteria)
-                            <option value="{{ $criteria->id }}" {{ old('criteria_id', $subcriteria->criteria_id) == $criteria->id ? 'selected' : '' }}>
+                            <option value="{{ $criteria->id }}" {{ old('criteria_id', $subCriteria->criteria_id) == $criteria->id ? 'selected' : '' }}>
                                 {{ $criteria->code }} - {{ $criteria->name }}
                             </option>
                             @endforeach
@@ -45,7 +45,7 @@
                                class="form-control @error('value') is-invalid @enderror" 
                                id="value" 
                                name="value" 
-                               value="{{ old('value', $subcriteria->value) }}" 
+                               value="{{ old('value', $subCriteria->value) }}" 
                                min="1"
                                max="5"
                                required>
@@ -67,7 +67,7 @@
                                class="form-control @error('range_min') is-invalid @enderror" 
                                id="range_min" 
                                name="range_min" 
-                               value="{{ old('range_min', $subcriteria->range_min) }}" 
+                               value="{{ old('range_min', $subCriteria->range_min) }}" 
                                required>
                         @error('range_min')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -85,7 +85,7 @@
                                class="form-control @error('range_max') is-invalid @enderror" 
                                id="range_max" 
                                name="range_max" 
-                               value="{{ old('range_max', $subcriteria->range_max) }}" 
+                               value="{{ old('range_max', $subCriteria->range_max) }}" 
                                required>
                         @error('range_max')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -113,3 +113,4 @@
     </div>
 </div>
 @endsection
+
