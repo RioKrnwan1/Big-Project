@@ -68,9 +68,12 @@
                                     @endif
                                 </td>
                                 <td class="text-end pe-4">
-                                    <form action="{{ route('subcriterias.destroy', $s->id) }}" method="POST">
+                                    <a href="{{ route('subcriterias.edit', $s->id) }}" class="btn btn-sm text-warning border-0 bg-transparent p-0 me-2" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('subcriterias.destroy', $s->id) }}" method="POST" class="d-inline">
                                         @csrf @method('DELETE')
-                                        <button class="btn btn-sm text-danger border-0 bg-transparent p-0" onclick="return confirm('Hapus?')">
+                                        <button class="btn btn-sm text-danger border-0 bg-transparent p-0" onclick="return confirm('Hapus?')" title="Hapus">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
