@@ -30,5 +30,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('comparisons', ComparisonController::class);
     
-    Route::get('/spk', [SpkController::class, 'index'])->name('spk.index');
+    Route::resource('spk', SpkController::class);
 });
