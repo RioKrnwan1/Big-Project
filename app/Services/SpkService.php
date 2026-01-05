@@ -39,6 +39,9 @@ class SpkService
         // Sort by score descending
         usort($hasilAkhir, fn($a, $b) => $b['score'] <=> $a['score']);
 
+        // Limit hasil akhir to top 5 only (as requested by lecturer)
+        $hasilAkhir = array_slice($hasilAkhir, 0, 5);
+
         return [
             'data_awal' => $dataAwal,
             'normalisasi' => $normalisasi,

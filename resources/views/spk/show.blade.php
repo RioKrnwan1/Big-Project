@@ -2,62 +2,31 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h3 class="fw-bold text-dark mb-1">Hasil Analisa SAW</h3>
-        <p class="text-muted small mb-0">Laporan lengkap perhitungan metode Simple Additive Weighting</p>
-    </div>
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saveResultModal">
-        <i class="fas fa-save me-2"></i>Simpan Hasil Ini
-    </button>
-</div>
-
-{{-- Saved Results Section --}}
-@if($savedResults->count() > 0)
-<div class="card mb-4">
-    <div class="card-header bg-white">
-        <h6 class="mb-0 fw-bold"><i class="fas fa-history me-2"></i>Hasil Tersimpan ({{ $savedResults->count() }})</h6>
-    </div>
+{{-- Header with saved result info --}}
+<div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-sm table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th>Nama</th>
-                        <th>Catatan</th>
-                        <th>Tanggal</th>
-                        <th class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($savedResults as $saved)
-                    <tr>
-                        <td><strong>{{ $saved->name }}</strong></td>
-                        <td>{{ $saved->notes ? Str::limit($saved->notes, 50) : '-' }}</td>
-                        <td><small>{{ $saved->created_at->format('d M Y H:i') }}</small></td>
-                        <td class="text-center">
-                            <a href="{{ route('spk.show', $saved->id) }}" class="btn btn-sm btn-info" title="Lihat">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            <a href="{{ route('spk.edit', $saved->id) }}" class="btn btn-sm btn-warning" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form action="{{ route('spk.destroy', $saved->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Hapus hasil tersimpan?')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h3 class="fw-bold text-dark mb-2">{{ $savedResult->name }}</h3>
+                <p class="text-muted mb-2">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Disimpan pada: {{ $savedResult->created_at->format('d M Y H:i') }}
+                </p>
+                @if($savedResult->notes)
+                <div class="alert alert-info mb-0">
+                    <strong><i class="fas fa-sticky-note me-2"></i>Catatan:</strong><br>
+                    {{ $savedResult->notes }}
+                </div>
+                @endif
+            </div>
+            <div>
+                <a href="{{ route('spk.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                </a>
+            </div>
         </div>
     </div>
 </div>
-@endif
 
 
 <ul class="nav nav-pills mb-4 gap-2" id="pills-tab" role="tablist">
@@ -214,34 +183,4 @@
 
     </div>
 </div>
-
-{{-- Save Result Modal --}}
-<div class="modal fade" id="saveResultModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('spk.store') }}" method="POST">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-save me-2"></i>Simpan Hasil SPK</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nama Hasil <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="name" name="name" required placeholder="Misal: Hasil SPK Januari 2026">
-                    </div>
-                    <div class="mb-3">
-                        <label for="notes" class="form-label">Catatan (Optional)</label>
-                        <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Tambahkan catatan untuk hasil ini..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 @endsection
