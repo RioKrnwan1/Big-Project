@@ -29,5 +29,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('subcriterias', SubCriteriaController::class);
     Route::resource('comparisons', ComparisonController::class);
     
-    Route::resource('spk', SpkController::class);
+    Route::get('/spk', [SpkController::class, 'index'])->name('spk.index');
+    Route::get('/spk/export-excel', [SpkController::class, 'exportExcel'])->name('spk.export');
+    Route::get('/spk/export-pdf', [SpkController::class, 'exportPDF'])->name('spk.exportPdf');
+    Route::post('/spk/recalculate', [SpkController::class, 'recalculate'])->name('spk.recalculate');
 });

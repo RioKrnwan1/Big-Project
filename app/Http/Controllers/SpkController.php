@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Criteria;
 use App\Models\Drink;
-use App\Models\SpkResult;
 use App\Services\SpkService;
-use App\Http\Requests\SpkResultRequest;
+use Illuminate\Http\Request;
 
 //SPK Controller - Menampilkan hasil sistem pendukung keputusan dan mengelola hasil tersimpan
 class SpkController extends Controller
@@ -38,11 +37,8 @@ class SpkController extends Controller
             $normalisasi = $result['normalisasi'];
             $dataAwal = $result['data_awal'];
             $criterias = Criteria::all();
-            
-            // Ambil daftar hasil tersimpan
-            $savedResults = SpkResult::latest()->get();
 
-            return view('spk.index', compact('hasilAkhir', 'normalisasi', 'dataAwal', 'criterias', 'savedResults'));
+            return view('spk.index', compact('hasilAkhir', 'normalisasi', 'dataAwal', 'criterias'));
         } catch (\Exception $e) {
             \Log::error('SPK Calculation Error: ' . $e->getMessage());
             
@@ -50,95 +46,95 @@ class SpkController extends Controller
                 ->with('error', 'Terjadi kesalahan saat menghitung SPK: ' . $e->getMessage());
         }
     }
-    
-    //Simpan hasil perhitungan SPK saat ini
-    public function store(SpkResultRequest $request)
+
+    //Export hasil SPK ke PDF
+    public function exportPDF()
     {
         try {
-            // Ambil perhitungan saat ini
+            //Ambil perhitungan saat ini
             $result = $this->spkService->calculate();
-            
-            // Simpan hasil
-            SpkResult::create([
-                'name' => $request->name,
-                'notes' => $request->notes,
-                'result_data' => $result
-            ]);
-
-            return redirect()->route('spk.index')
-                ->with('success', 'Hasil SPK berhasil disimpan');
-        } catch (\Exception $e) {
-            \Log::error('Error saving SPK result: ' . $e->getMessage());
-            
-            return back()->withInput()
-                ->with('error', 'Terjadi kesalahan saat menyimpan hasil');
-        }
-    }
-
-    //Tampilkan detail hasil tersimpan yang dipilih
-    public function show($id)
-    {
-        try {
-            $savedResult = SpkResult::findOrFail($id);
-            $result = $savedResult->result_data;
             
             $hasilAkhir = $result['hasil_akhir'];
             $normalisasi = $result['normalisasi'];
             $dataAwal = $result['data_awal'];
             $criterias = Criteria::all();
 
-            return view('spk.show', compact('savedResult', 'hasilAkhir', 'normalisasi', 'dataAwal', 'criterias'));
-        } catch (\Exception $e) {
-            return redirect()->route('spk.index')
-                ->with('error', 'Hasil tersimpan tidak ditemukan');
-        }
-    }
-
-    //Tampilkan form untuk edit hasil tersimpan yang dipilih
-    public function edit($id)
-    {
-        try {
-            $savedResult = SpkResult::findOrFail($id);
-            return view('spk.edit', compact('savedResult'));
-        } catch (\Exception $e) {
-            return redirect()->route('spk.index')
-                ->with('error', 'Hasil tersimpan tidak ditemukan');
-        }
-    }
-
-    //Update hasil tersimpan yang dipilih
-    public function update(SpkResultRequest $request, $id)
-    {
-        try {
-            $savedResult = SpkResult::findOrFail($id);
-            $savedResult->update([
-                'name' => $request->name,
-                'notes' => $request->notes
-            ]);
-
-            return redirect()->route('spk.index')
-                ->with('success', 'Hasil SPK berhasil diperbarui');
-        } catch (\Exception $e) {
-            \Log::error('Error updating SPK result: ' . $e->getMessage());
+            //Generate PDF
+            $pdf = \PDF::loadView('spk.pdf', compact('hasilAkhir', 'normalisasi', 'dataAwal', 'criterias'));
             
-            return back()->withInput()
-                ->with('error', 'Terjadi kesalahan saat memperbarui hasil');
+            //Filename dengan timestamp
+            $filename = 'SPK_Laporan_' . date('Y-m-d_His') . '.pdf';
+
+            return $pdf->download($filename);
+
+        } catch (\Exception $e) {
+            \Log::error('Error exporting SPK to PDF: ' . $e->getMessage());
+            
+            return back()->with('error', 'Terjadi kesalahan saat mengekspor ke PDF: ' . $e->getMessage());
         }
     }
 
-    //Hapus hasil tersimpan yang dipilih
-    public function destroy($id)
+    //Hitung ulang SPK dengan filter kriteria tertentu
+    public function recalculate(Request $request)
     {
         try {
-            $savedResult = SpkResult::findOrFail($id);
-            $savedResult->delete();
-
-            return redirect()->back()
-                ->with('success', 'Hasil tersimpan berhasil dihapus');
-        } catch (\Exception $e) {
-            \Log::error('Error deleting SPK result: ' . $e->getMessage());
+            //Ambil kriteria yang dipilih dari request
+            $selectedCriteriaIds = $request->input('criteria_ids', []);
             
-            return back()->with('error', 'Terjadi kesalahan saat menghapus hasil');
+            //Jika tidak ada yang dipilih, gunakan semua kriteria
+            if (empty($selectedCriteriaIds)) {
+                return redirect()->route('spk.index');
+            }
+
+            //Hitung dengan kriteria terpilih saja
+            $result = $this->spkService->calculateWithFilter($selectedCriteriaIds);
+            
+            $hasilAkhir = $result['hasil_akhir'];
+            $normalisasi = $result['normalisasi'];
+            $dataAwal = $result['data_awal'];
+            $criterias = Criteria::whereIn('id', $selectedCriteriaIds)->get();
+            $allCriterias = Criteria::all();
+
+            return view('spk.index', compact('hasilAkhir', 'normalisasi', 'dataAwal', 'criterias', 'allCriterias'))
+                ->with('filtered', true);
+
+        } catch (\Exception $e) {
+            \Log::error('Error recalculating SPK: ' . $e->getMessage());
+            
+            return back()->with('error', 'Terjadi kesalahan saat menghitung ulang: ' . $e->getMessage());
+        }
+    }
+
+    //Export hasil SPK ke Excel
+    public function exportExcel()
+    {
+        try {
+            //Ambil perhitungan saat ini
+            $result = $this->spkService->calculate();
+            
+            $hasilAkhir = $result['hasil_akhir'];
+            $normalisasi = $result['normalisasi'];
+            $dataAwal = $result['data_awal'];
+            $criterias = Criteria::all();
+
+            //Data untuk export
+            $data = [
+                'hasil_akhir' => $hasilAkhir,
+                'normalisasi' => $normalisasi,
+                'data_awal' => $dataAwal,
+                'criterias' => $criterias,
+            ];
+
+            //Generate filename dengan timestamp
+            $filename = 'SPK_Hasil_' . date('Y-m-d_His') . '.xlsx';
+
+            //Download Excel
+            return \Excel::download(new \App\Exports\SpkExport($data), $filename);
+
+        } catch (\Exception $e) {
+            \Log::error('Error exporting SPK to Excel: ' . $e->getMessage());
+            
+            return back()->with('error', 'Terjadi kesalahan saat mengekspor ke Excel: ' . $e->getMessage());
         }
     }
 }

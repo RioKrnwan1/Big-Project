@@ -35,6 +35,32 @@ class SpkService
         ];
     }
 
+    //Hitung SPK dengan filter kriteria tertentu
+    public function calculateWithFilter(array $criteriaIds): array
+    {
+        $minuman = Drink::all();
+        $kriteria = Criteria::whereIn('id', $criteriaIds)->get();
+
+        //Matriks X (hanya dengan kriteria terpilih)
+        $dataAwal = $this->konversiKeSkala($minuman, $kriteria);
+
+        //min max
+        $minMax = $this->cariMinMax($dataAwal, $kriteria);
+
+        //normalisasi (Matriks R) dan skor akhir (V)
+        [$normalisasi, $hasilAkhir] = $this->hitungSkor($dataAwal, $kriteria, $minMax);
+
+        usort($hasilAkhir, fn($a, $b) => $b['score'] <=> $a['score']);
+
+        $hasilAkhir = array_slice($hasilAkhir, 0, 5);
+
+        return [
+            'data_awal' => $dataAwal,
+            'normalisasi' => $normalisasi,
+            'hasil_akhir' => $hasilAkhir,
+        ];
+    }
+
     // konversi nilai mentah ke skala 1-5 berdasarkan range subkriteria
     protected function konversiKeSkala(Collection $minuman, Collection $kriteria): array
     {
@@ -103,9 +129,9 @@ class SpkService
 
                 // Hitung nilai ternormalisasi
                 if ($k->attribute === 'benefit') {
-                    $r = ($pembagi == 0) ? 0 : ($skor / $pembagi);
+                    $r = ($pembagi == 0) ? 0 : ($skor / $pembagi); //Semakin besar skor → semakin bagus
                 } else {
-                    $r = ($skor == 0) ? 0 : ($pembagi / $skor);
+                    $r = ($skor == 0) ? 0 : ($pembagi / $skor); //Semakin kecil skor → semakin bagus
                 }
 
                 $nilaiNormalisasi[$k->id] = $r;
