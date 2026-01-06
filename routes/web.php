@@ -27,7 +27,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('drinks', DrinkController::class);
     Route::resource('criterias', CriteriaController::class);
     Route::resource('subcriterias', SubCriteriaController::class);
-    Route::resource('users', UserController::class);
     Route::resource('comparisons', ComparisonController::class);
     
     Route::resource('spk', SpkController::class);
