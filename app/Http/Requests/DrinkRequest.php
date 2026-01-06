@@ -4,39 +4,27 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Form Request for validating Drink data
- */
 class DrinkRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    //aturan pengisian
     public function rules(): array
     {
         return [
             'name' => 'required|string|max:255',
-            'calories' => 'required|numeric|min:0|max:500',     // Max 500 kcal untuk minuman 250ml
-            'protein' => 'required|numeric|min:0|max:20',       // Max 20g (susu protein tinggi)
-            'carbs' => 'required|numeric|min:0|max:60',         // Max 60g (smoothie/juice manis)
-            'fat' => 'required|numeric|min:0|max:20',           // Max 20g (cream/susu full fat)
+            'calories' => 'required|numeric|min:0|max:500',   
+            'protein' => 'required|numeric|min:0|max:20',     
+            'carbs' => 'required|numeric|min:0|max:60',         
+            'fat' => 'required|numeric|min:0|max:20',         
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
         ];
     }
 
-    /**
-     * Get custom validation messages
-     */
+    // pesan eror
     public function messages(): array
     {
         return [

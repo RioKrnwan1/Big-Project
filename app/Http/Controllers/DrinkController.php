@@ -6,42 +6,27 @@ use App\Models\Drink;
 use App\Http\Requests\DrinkRequest;
 use Illuminate\Http\Request;
 
-/**
- * Drink Controller - Manages beverage alternatives
- */
+//Drink Controller - Mengelola alternatif minuman
 class DrinkController extends Controller
 {
-    /**
-     * Display a listing of drinks
-     */
+    //Menampilkan daftar minuman
     public function index()
     {
         $drinks = Drink::all();
         return view('drinks.index', compact('drinks'));
     }
 
-    /**
-     * Show the form for creating a new drink
-     */
+    //Menampilkan form tambah minuman
     public function create()
     {
         return view('drinks.create');
     }
 
-    /**
-     * Store a newly created drink
-     */
+    //Menyimpan minuman baru
     public function store(DrinkRequest $request)
     {
         try {
             $data = $request->validated();
-
-            // Handle file upload if present
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('drinks', 'public');
-                $data['image'] = $imagePath;
-            }
-
             Drink::create($data);
 
             return redirect()->route('drinks.index')
@@ -54,9 +39,7 @@ class DrinkController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified drink
-     */
+    //Menampilkan form edit minuman
     public function edit($id)
     {
         try {
@@ -68,26 +51,12 @@ class DrinkController extends Controller
         }
     }
 
-    /**
-     * Update the specified drink
-     */
+    //Memperbarui data minuman
     public function update(DrinkRequest $request, $id)
     {
         try {
             $drink = Drink::findOrFail($id);
             $data = $request->validated();
-
-            // Handle file upload if present
-            if ($request->hasFile('image')) {
-                // Delete old image if exists
-                if ($drink->image && \Storage::disk('public')->exists($drink->image)) {
-                    \Storage::disk('public')->delete($drink->image);
-                }
-                
-                $imagePath = $request->file('image')->store('drinks', 'public');
-                $data['image'] = $imagePath;
-            }
-
             $drink->update($data);
 
             return redirect()->route('drinks.index')
@@ -100,19 +69,11 @@ class DrinkController extends Controller
         }
     }
 
-    /**
-     * Remove the specified drink
-     */
+    //Menghapus minuman
     public function destroy($id)
     {
         try {
             $drink = Drink::findOrFail($id);
-            
-            // Delete image if exists
-            if ($drink->image && \Storage::disk('public')->exists($drink->image)) {
-                \Storage::disk('public')->delete($drink->image);
-            }
-            
             $drink->delete();
 
             return redirect()->back()

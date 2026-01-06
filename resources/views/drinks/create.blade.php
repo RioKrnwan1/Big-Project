@@ -112,25 +112,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="mb-4">
-                        <label for="image" class="form-label fw-semibold">
-                            <i class="fas fa-image text-primary me-2"></i>Gambar (Opsional)
-                        </label>
-                        <input type="file" 
-                               class="form-control @error('image') is-invalid @enderror" 
-                               id="image" 
-                               name="image" 
-                               accept="image/*">
-                        <small class="text-muted">Format: JPG, PNG, GIF. Max: 2MB</small>
-                        @error('image')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-
             <hr class="my-4">
 
             <div class="d-flex gap-2">

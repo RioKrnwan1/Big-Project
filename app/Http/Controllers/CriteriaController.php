@@ -5,31 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Criteria;
 use App\Http\Requests\CriteriaRequest;
 
-/**
- * Criteria Controller - Manages evaluation criteria
- */
+//Criteria Controller - Mengelola kriteria evaluasi
 class CriteriaController extends Controller
 {
-    /**
-     * Display a listing of criterias
-     */
+    //Menampilkan daftar kriteria
     public function index()
     {
         $criterias = Criteria::with('subCriterias')->get();
         return view('criterias.index', compact('criterias'));
     }
 
-    /**
-     * Show the form for creating a new criteria
-     */
+    //Menampilkan form tambah kriteria
     public function create()
     {
         return view('criterias.create');
     }
 
-    /**
-     * Store a newly created criteria
-     */
+    //Menyimpan kriteria baru
     public function store(CriteriaRequest $request)
     {
         try {
@@ -45,9 +37,7 @@ class CriteriaController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified criteria
-     */
+    //Menampilkan form edit kriteria
     public function edit($id)
     {
         try {
@@ -59,9 +49,7 @@ class CriteriaController extends Controller
         }
     }
 
-    /**
-     * Update the specified criteria
-     */
+    //Memperbarui data kriteria
     public function update(CriteriaRequest $request, $id)
     {
         try {
@@ -78,9 +66,7 @@ class CriteriaController extends Controller
         }
     }
 
-    /**
-     * Remove the specified criteria
-     */
+    //Menghapus kriteria
     public function destroy($id)
     {
         try {

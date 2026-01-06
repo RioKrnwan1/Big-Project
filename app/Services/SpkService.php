@@ -7,39 +7,25 @@ use App\Models\Criteria;
 use App\Models\SubCriteria;
 use Illuminate\Support\Collection;
 
-/**
- * SPK Service - Simple Additive Weighting (SAW) Implementation
- * 
- * Implements SAW algorithm for multi-criteria decision making:
- * 1. Convert raw values to scaled scores (1-5)
- * 2. Normalize scores (0-1)
- * 3. Calculate weighted sum
- */
 class SpkService
 {
-    /**
-     * Calculate SPK results using SAW method
-     *
-     * @return array{data_awal: array, normalisasi: array, hasil_akhir: array}
-     */
+    /// Menjalankan seluruh proses SPK dengan metode SAW
     public function calculate(): array
     {
         $minuman = Drink::all();
         $kriteria = Criteria::all();
 
-        // Step 1: Convert to scale (Matrix X)
+        //Matriks X
         $dataAwal = $this->konversiKeSkala($minuman, $kriteria);
 
-        // Step 2: Find min/max for normalization
+        // min max
         $minMax = $this->cariMinMax($dataAwal, $kriteria);
 
-        // Step 3: Calculate normalization (Matrix R) and final scores (V)
+        // normalisasi (Matriks R) dan skor akhir (V)
         [$normalisasi, $hasilAkhir] = $this->hitungSkor($dataAwal, $kriteria, $minMax);
 
-        // Sort by score descending
         usort($hasilAkhir, fn($a, $b) => $b['score'] <=> $a['score']);
 
-        // Limit hasil akhir to top 5 only (as requested by lecturer)
         $hasilAkhir = array_slice($hasilAkhir, 0, 5);
 
         return [
@@ -49,9 +35,7 @@ class SpkService
         ];
     }
 
-    /**
-     * Convert raw values to scale 1-5 based on subcriteria ranges
-     */
+    // konversi nilai mentah ke skala 1-5 berdasarkan range subkriteria
     protected function konversiKeSkala(Collection $minuman, Collection $kriteria): array
     {
         $hasil = [];
@@ -62,13 +46,13 @@ class SpkService
             foreach ($kriteria as $k) {
                 $nilaiAsli = $item->{$k->column_ref};
 
-                // Find matching subcriteria range
+                // Cari subkriteria yang range-nya cocok
                 $subKriteria = SubCriteria::where('criteria_id', $k->id)
                     ->where('range_min', '<=', $nilaiAsli)
                     ->where('range_max', '>=', $nilaiAsli)
                     ->first();
 
-                // Default score is 1 if no range matches
+                // Skor default 1 jika tidak ada range yang cocok
                 $skorPerKriteria[$k->id] = $subKriteria ? $subKriteria->value : 1;
             }
 
@@ -81,9 +65,7 @@ class SpkService
         return $hasil;
     }
 
-    /**
-     * Find min/max values for each criteria
-     */
+    // cari nilai min atau max sebagai patokan normalisasi
     protected function cariMinMax(array $dataAwal, Collection $kriteria): array
     {
         $hasil = [];
@@ -96,7 +78,7 @@ class SpkService
                 continue;
             }
 
-            // Benefit uses max, Cost uses min
+            // Benefit gunakan max, Cost gunakan min
             $hasil[$k->id] = ($k->attribute === 'benefit') 
                 ? max($semuaNilai) 
                 : min($semuaNilai);
@@ -105,13 +87,7 @@ class SpkService
         return $hasil;
     }
 
-    /**
-     * Calculate normalization and final scores
-     * 
-     * SAW normalization formulas:
-     * - Benefit: r = x / max
-     * - Cost: r = min / x
-     */
+    //normalisasi dan menghitung skor akhir
     protected function hitungSkor(array $dataAwal, Collection $kriteria, array $minMax): array
     {
         $normalisasi = [];
@@ -125,7 +101,7 @@ class SpkService
                 $skor = $item['values'][$k->id];
                 $pembagi = $minMax[$k->id];
 
-                // Calculate normalized value
+                // Hitung nilai ternormalisasi
                 if ($k->attribute === 'benefit') {
                     $r = ($pembagi == 0) ? 0 : ($skor / $pembagi);
                 } else {

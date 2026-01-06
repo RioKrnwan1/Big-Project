@@ -8,22 +8,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Authentication Controller - Handles login/logout/register
- */
+//Authentication Controller - Menangani login/logout/registrasi
 class AuthController extends Controller
 {
-    /**
-     * Show the login form
-     */
+    //Menampilkan form login
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle login request
-     */
+    //Memproses permintaan login
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
@@ -39,17 +33,13 @@ class AuthController extends Controller
             ->with('error', 'Email atau password salah');
     }
 
-    /**
-     * Show the registration form
-     */
+    //Menampilkan form registrasi
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle registration request
-     */
+    //Memproses permintaan registrasi
     public function register(RegisterRequest $request)
     {
         try {
@@ -66,9 +56,7 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Handle logout request
-     */
+    //Memproses permintaan logout
     public function logout(Request $request)
     {
         Auth::logout();

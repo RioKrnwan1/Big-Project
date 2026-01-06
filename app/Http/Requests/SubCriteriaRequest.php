@@ -4,31 +4,22 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Form Request for validating SubCriteria data
- */
 class SubCriteriaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    //pengecekan user
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+   //aturan pengisian
     public function rules(): array
     {
         return [
             'criteria_id' => 'required|exists:criterias,id',
-            'range_min' => 'required|numeric|min:0|max:1000',              // Max 1000 (cover semua kemungkinan)
-            'range_max' => 'required|numeric|min:0|max:1000|gt:range_min', // Max 1000 & harus > min
-            'value' => 'required|integer|min:1|max:5',                     // Skor 1-5
+            'range_min' => 'required|numeric|min:0|max:1000',          
+            'range_max' => 'required|numeric|min:0|max:1000|gt:range_min', 
+            'value' => 'required|integer|min:1|max:5',                    
         ];
     }
 

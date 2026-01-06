@@ -6,30 +6,25 @@ use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * User Controller - Manages user profile
- */
+//User Controller - Mengelola profil pengguna
 class UserController extends Controller
 {
-    /**
-     * Show the authenticated user's profile
-     */
+    
+    //Menampilkan halaman profil pengguna
     public function profile()
     {
         $user = Auth::user();
         return view('users.profile', compact('user'));
     }
 
-    /**
-     * Update the authenticated user's profile
-     */
+  
+    //Memperbarui data profil pengguna
     public function updateProfile(UserRequest $request)
     {
         try {
             $user = Auth::user();
             $data = $request->validated();
 
-            // Remove password if empty (no update needed)
             if (empty($data['password'])) {
                 unset($data['password']);
             }

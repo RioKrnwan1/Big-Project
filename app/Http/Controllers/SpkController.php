@@ -8,9 +8,7 @@ use App\Models\SpkResult;
 use App\Services\SpkService;
 use App\Http\Requests\SpkResultRequest;
 
-/**
- * SPK Controller - Displays decision support system results and manages saved results
- */
+//SPK Controller - Menampilkan hasil sistem pendukung keputusan dan mengelola hasil tersimpan
 class SpkController extends Controller
 {
     protected $spkService;
@@ -20,13 +18,11 @@ class SpkController extends Controller
         $this->spkService = $spkService;
     }
 
-    /**
-     * Display SPK calculation results and saved results list
-     */
+    //Tampilkan hasil perhitungan SPK dan daftar hasil tersimpan
     public function index()
     {
         try {
-            // Check if we have the minimum required data
+            // Cek apakah sudah ada data minimum yang dibutuhkan
             $criteriaCount = Criteria::count();
             $drinkCount = Drink::count();
             
@@ -35,7 +31,7 @@ class SpkController extends Controller
                     ->with('error', 'Data belum lengkap. Silakan tambahkan kriteria dan minuman terlebih dahulu.');
             }
             
-            // Calculate using SPK Service
+            // Hitung menggunakan SPK Service
             $result = $this->spkService->calculate();
             
             $hasilAkhir = $result['hasil_akhir'];
@@ -43,7 +39,7 @@ class SpkController extends Controller
             $dataAwal = $result['data_awal'];
             $criterias = Criteria::all();
             
-            // Get saved results
+            // Ambil daftar hasil tersimpan
             $savedResults = SpkResult::latest()->get();
 
             return view('spk.index', compact('hasilAkhir', 'normalisasi', 'dataAwal', 'criterias', 'savedResults'));
@@ -55,16 +51,14 @@ class SpkController extends Controller
         }
     }
     
-    /**
-     * Store current SPK calculation result
-     */
+    //Simpan hasil perhitungan SPK saat ini
     public function store(SpkResultRequest $request)
     {
         try {
-            // Get current calculation
+            // Ambil perhitungan saat ini
             $result = $this->spkService->calculate();
             
-            // Save result
+            // Simpan hasil
             SpkResult::create([
                 'name' => $request->name,
                 'notes' => $request->notes,
@@ -81,9 +75,7 @@ class SpkController extends Controller
         }
     }
 
-    /**
-     * Display the specified saved result
-     */
+    //Tampilkan detail hasil tersimpan yang dipilih
     public function show($id)
     {
         try {
@@ -102,9 +94,7 @@ class SpkController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified saved result
-     */
+    //Tampilkan form untuk edit hasil tersimpan yang dipilih
     public function edit($id)
     {
         try {
@@ -116,9 +106,7 @@ class SpkController extends Controller
         }
     }
 
-    /**
-     * Update the specified saved result
-     */
+    //Update hasil tersimpan yang dipilih
     public function update(SpkResultRequest $request, $id)
     {
         try {
@@ -138,9 +126,7 @@ class SpkController extends Controller
         }
     }
 
-    /**
-     * Remove the specified saved result
-     */
+    //Hapus hasil tersimpan yang dipilih
     public function destroy($id)
     {
         try {

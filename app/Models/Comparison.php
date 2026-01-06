@@ -16,9 +16,7 @@ class Comparison extends Model
         'drink_ids' => 'array',
     ];
 
-    /**
-     * Get the drinks associated with this comparison
-     */
+    //Ambil minuman yang terkait dengan perbandingan ini
     public function getDrinksAttribute()
     {
         if (empty($this->drink_ids)) {

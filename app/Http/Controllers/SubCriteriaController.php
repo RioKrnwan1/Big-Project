@@ -6,32 +6,24 @@ use App\Models\SubCriteria;
 use App\Models\Criteria;
 use App\Http\Requests\SubCriteriaRequest;
 
-/**
- * SubCriteria Controller - Manages sub-criteria ranges
- */
+//SubCriteria Controller - Mengelola rentang sub-kriteria
 class SubCriteriaController extends Controller
 {
-    /**
-     * Display a listing of sub-criterias grouped by criteria
-     */
+    //Menampilkan daftar sub-kriteria yang dikelompokkan berdasarkan kriteria
     public function index()
     {
         $groupedSubs = SubCriteria::with('criteria')->get()->groupBy('criteria_id');
         return view('subcriterias.index', compact('groupedSubs'));
     }
 
-    /**
-     * Show the form for creating a new sub-criteria
-     */
+    //Menampilkan form tambah sub-kriteria
     public function create()
     {
         $criterias = Criteria::all();
         return view('subcriterias.create', compact('criterias'));
     }
 
-    /**
-     * Store a newly created sub-criteria
-     */
+    //Menyimpan sub-kriteria baru
     public function store(SubCriteriaRequest $request)
     {
         try {
@@ -47,9 +39,7 @@ class SubCriteriaController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified sub-criteria
-     */
+    //Menampilkan form edit sub-kriteria
     public function edit($id)
     {
         try {
@@ -62,9 +52,7 @@ class SubCriteriaController extends Controller
         }
     }
 
-    /**
-     * Update the specified sub-criteria
-     */
+    //Memperbarui data sub-kriteria
     public function update(SubCriteriaRequest $request, $id)
     {
         try {
@@ -81,9 +69,7 @@ class SubCriteriaController extends Controller
         }
     }
 
-    /**
-     * Remove the specified sub-criteria
-     */
+    //Menghapus sub-kriteria
     public function destroy($id)
     {
         try {

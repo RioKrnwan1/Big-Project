@@ -7,10 +7,8 @@ use App\Models\Drink;
 use App\Http\Requests\ComparisonRequest;
 use App\Services\SpkService;
 
-/**
- * Comparison Controller - Manages drink comparisons with CRUD operations
- * Includes calculations for score differences and percentage comparisons
- */
+//Comparison Controller - Mengelola perbandingan minuman dengan operasi CRUD
+//Meliputi perhitungan selisih skor dan persentase perbandingan
 class ComparisonController extends Controller
 {
     protected $spkService;
@@ -20,9 +18,7 @@ class ComparisonController extends Controller
         $this->spkService = $spkService;
     }
 
-    /**
-     * Display a listing of comparisons with calculations
-     */
+    //Menampilkan daftar perbandingan dengan perhitungan
     public function index()
     {
         try {
@@ -63,18 +59,14 @@ class ComparisonController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new comparison
-     */
+    //Menampilkan form tambah perbandingan
     public function create()
     {
         $drinks = Drink::all();
         return view('comparisons.create', compact('drinks'));
     }
 
-    /**
-     * Store a newly created comparison
-     */
+    //Menyimpan perbandingan baru
     public function store(ComparisonRequest $request)
     {
         try {
@@ -90,9 +82,7 @@ class ComparisonController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified comparison
-     */
+    //Menampilkan form edit perbandingan
     public function edit($id)
     {
         try {
@@ -106,9 +96,7 @@ class ComparisonController extends Controller
         }
     }
 
-    /**
-     * Update the specified comparison
-     */
+    //Memperbarui data perbandingan
     public function update(ComparisonRequest $request, $id)
     {
         try {
@@ -125,9 +113,7 @@ class ComparisonController extends Controller
         }
     }
 
-    /**
-     * Remove the specified comparison
-     */
+    //Menghapus perbandingan
     public function destroy($id)
     {
         try {
@@ -143,13 +129,7 @@ class ComparisonController extends Controller
         }
     }
 
-    /**
-     * Calculate comparison metrics between drinks
-     * 
-     * @param Collection $drinks
-     * @param Collection $scores
-     * @return array
-     */
+    //Menghitung metrik perbandingan antar minuman
     protected function calculateComparison($drinks, $scores): array
     {
         $scoresArray = $scores->pluck('score', 'name')->toArray();
@@ -173,12 +153,7 @@ class ComparisonController extends Controller
         ];
     }
 
-    /**
-     * Calculate absolute score differences between drinks
-     * 
-     * @param array $scores
-     * @return array
-     */
+    //Menghitung selisih skor absolut antar minuman
     protected function getScoreDifferences(array $scores): array
     {
         $differences = [];
@@ -201,12 +176,7 @@ class ComparisonController extends Controller
         return $differences;
     }
 
-    /**
-     * Calculate percentage differences from highest score
-     * 
-     * @param array $scores
-     * @return array
-     */
+    //Menghitung selisih persentase dari skor tertinggi
     protected function getPercentageDifferences(array $scores): array
     {
         $maxScore = max($scores);
